@@ -30,6 +30,20 @@ class OrderServiceTest {
     }
 
     @Test
+    @DisplayName("명언 등록이 수행되면 Map에 저장된다..")
+    void createQuoteStoredInMap() {
+        int cycle = 2;
+        for (int i = 0; i < cycle; i++) {
+            Scanner scanner = TestUtil.genScanner("""
+                현재를 사랑하라.
+                작자미상
+                """.stripIndent());
+            orderService.createQuote(scanner);
+        }
+        Assertions.assertThat(orderService.getStorageSize()).isEqualTo(cycle);
+    }
+
+    @Test
     @DisplayName("명언을 등록할 때마다 명언 번호가 증가한다.")
     void createQuoteCountNumberTest() {
         int result = 0;

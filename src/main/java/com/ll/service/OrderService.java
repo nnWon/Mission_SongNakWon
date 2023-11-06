@@ -45,6 +45,10 @@ public class OrderService {
     }
 
     //Test용 코드
+    public int getStorageSize() {
+        return storage.size();
+    }
+
     public void clear(){
         storage.clear();
     }
