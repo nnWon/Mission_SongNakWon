@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 class OrderServiceTest {
 
-    private final OrderService orderService = new OrderService();
+    private final OrderService orderService = new OrderService(new HashMap<>());
 
     @BeforeEach
     void beforeEach() {
