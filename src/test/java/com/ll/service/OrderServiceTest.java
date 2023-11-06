@@ -1,12 +1,11 @@
 package com.ll.service;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import util.TestUtil;
 
 import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
 
@@ -23,5 +22,19 @@ class OrderServiceTest {
                 """.stripIndent());
 
         orderService.execute(scanner, order);
+    }
+
+    @Test
+    @DisplayName("명언을 등록할 때마다 명언 번호가 증가한다.")
+    void createQuoteCountNumberTest() {
+        int result = 0;
+        for (int i = 0; i < 10; i++) {
+            Scanner scanner = TestUtil.genScanner("""
+                현재를 사랑하라.
+                작자미상
+                """.stripIndent());
+            result = orderService.createQuote(scanner);
+        }
+        Assertions.assertThat(result).isEqualTo(10);
     }
 }
