@@ -11,6 +11,11 @@ public class OrderService {
     private final Map<Integer, Quote> storage = new HashMap<>();
     private int sequence = 0;
 
+    public OrderService() {
+        storage.put(1, new Quote("현재를 사랑하라", "작자미상"));
+        storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
+    }
+
     public void execute(Scanner scanner, String order) {
         if (order.equals("등록")) {
             createQuote(scanner);
@@ -49,7 +54,7 @@ public class OrderService {
         return storage.size();
     }
 
-    public void clear(){
+    public void clear() {
         storage.clear();
     }
 }
