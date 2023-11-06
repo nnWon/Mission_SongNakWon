@@ -5,12 +5,28 @@ import com.ll.domain.Quote;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FileSystem {
     private final static String FILE_PATH = "./file/quotes.txt";
     private final static Charset CHARSET = StandardCharsets.UTF_8;
+
+    public void createSaveFile(){
+        Path saveFilePath = Paths.get(FILE_PATH);
+        if (Files.exists(saveFilePath)){
+            return;
+        }
+        try {
+            Files.createFile(saveFilePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void SaveQuotes(Map<Integer, Quote> storage) {
 
