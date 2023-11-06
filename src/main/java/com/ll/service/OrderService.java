@@ -14,7 +14,24 @@ public class OrderService {
     public void execute(Scanner scanner, String order) {
         if (order.equals("등록")) {
             createQuote(scanner);
+            return;
         }
+
+        if (order.equals("목록")) {
+            printQuoteList();
+            return;
+        }
+    }
+
+    private void printQuoteList() {
+        for (int sequence : storage.keySet()) {
+            printQuote(sequence);
+        }
+    }
+
+    private void printQuote(int sequence) {
+        Quote quote = storage.get(sequence);
+        System.out.printf("%d // %s // %s \n", sequence, quote.getSpeaker(), quote.getQuote());
     }
 
     public int createQuote(Scanner scanner) {
