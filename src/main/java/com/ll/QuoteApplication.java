@@ -16,7 +16,8 @@ public class QuoteApplication {
         String order = "";
         while (!order.equals("종료")) {
             System.out.print("명령) ");
-            orderService.execute(scanner, new ParamDto(scanner.nextLine()));
+            order = scanner.nextLine();
+            orderService.execute(scanner, new ParamDto(order));
         }
         scanner.close();
     }
