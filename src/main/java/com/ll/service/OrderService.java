@@ -15,6 +15,7 @@ public class OrderService {
     public OrderService() {
         storage.put(1, new Quote("현재를 사랑하라", "작자미상"));
         storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
+        this.sequence = storage.size();
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
