@@ -51,6 +51,7 @@ class OrderServiceTest {
     @Test
     @DisplayName("명언을 등록할 때마다 명언 번호가 증가한다.")
     void createQuoteCountNumberTest() {
+        OrderService orderService = new OrderService(new HashMap<>());
         int result = 0;
         int cycle = 10;
         for (int i = 0; i < cycle; i++) {
