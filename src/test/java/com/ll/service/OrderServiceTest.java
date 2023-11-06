@@ -1,5 +1,6 @@
 package com.ll.service;
 
+import com.ll.dto.ParamDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +14,10 @@ class OrderServiceTest {
     private final OrderService orderService = new OrderService();
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         orderService.clear();
     }
+
     @Test
     @DisplayName("명언 등록이 수행되면 등록 메세지가 출력된다.")
     void createQuote() {
@@ -26,7 +28,7 @@ class OrderServiceTest {
                 종료
                 """.stripIndent());
 
-        orderService.execute(scanner, order);
+        orderService.execute(scanner, new ParamDto(order));
     }
 
     @Test
@@ -35,9 +37,9 @@ class OrderServiceTest {
         int cycle = 2;
         for (int i = 0; i < cycle; i++) {
             Scanner scanner = TestUtil.genScanner("""
-                현재를 사랑하라.
-                작자미상
-                """.stripIndent());
+                    현재를 사랑하라.
+                    작자미상
+                    """.stripIndent());
             orderService.createQuote(scanner);
         }
         Assertions.assertThat(orderService.getStorageSize()).isEqualTo(cycle);
@@ -50,9 +52,9 @@ class OrderServiceTest {
         int cycle = 10;
         for (int i = 0; i < cycle; i++) {
             Scanner scanner = TestUtil.genScanner("""
-                현재를 사랑하라.
-                작자미상
-                """.stripIndent());
+                    현재를 사랑하라.
+                    작자미상
+                    """.stripIndent());
             result = orderService.createQuote(scanner);
         }
         Assertions.assertThat(result).isEqualTo(cycle);

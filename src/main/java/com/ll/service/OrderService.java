@@ -1,6 +1,7 @@
 package com.ll.service;
 
 import com.ll.domain.Quote;
+import com.ll.dto.ParamDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,8 @@ public class OrderService {
         storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
     }
 
-    public void execute(Scanner scanner, String order) {
+    public void execute(Scanner scanner, ParamDto paramDto) {
+        String order = paramDto.getOrder();
         if (order.equals("등록")) {
             createQuote(scanner);
             return;
