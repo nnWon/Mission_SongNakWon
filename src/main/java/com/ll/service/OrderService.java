@@ -38,15 +38,22 @@ public class OrderService {
         }
 
         if (order.equals("삭제")) {
-            if (validateParam(paramDto)){
+            if (validateParam(paramDto)) {
                 deleteQuote(paramDto);
+            }
+            return;
+        }
+
+        if (order.equals("수정")) {
+            if (validateParam(paramDto)) {
+                updateQuote(paramDto, scanner);
             }
             return;
         }
     }
 
     private boolean validateParam(ParamDto paramDto) {
-        if(!isContainQueryString(paramDto)) {
+        if (!isContainQueryString(paramDto)) {
             return false;
         }
 
@@ -57,6 +64,24 @@ public class OrderService {
             return false;
         }
         return true;
+    }
+
+    public void updateQuote(ParamDto paramDto, Scanner scanner) {
+
+        Map<String, String> queryString = paramDto.getQueryString();
+        int id = Integer.parseInt(queryString.get("id"));
+
+        Quote quote = storage.get(id);
+        System.out.printf("명언(기존) :%s \n", quote.getQuote());
+        System.out.print("명언 :");
+        String newQuote = scanner.nextLine();
+
+        System.out.printf("작가(기존) :%s \n", quote.getSpeaker());
+        System.out.print("작가 :");
+        String newSpeaker = scanner.nextLine();
+        Quote updateQuote = new Quote(newQuote, newSpeaker);
+        storage.put(id, updateQuote);
+        System.out.println(id + "번 명언이 수정되었습니다.");
     }
 
     public void deleteQuote(ParamDto paramDto) {
