@@ -19,7 +19,7 @@ public class OrderService {
     }
 
     public OrderService(Map<Integer, Quote> storage) {
-        for (int key: storage.keySet()) {
+        for (int key : storage.keySet()) {
             this.storage.put(key, storage.get(key));
         }
         this.sequence = storage.size();
@@ -38,26 +38,41 @@ public class OrderService {
         }
 
         if (order.equals("삭제")) {
-            deleteQuote(paramDto);
+            if (validateParam(paramDto)){
+                deleteQuote(paramDto);
+            }
             return;
         }
     }
 
-    public void deleteQuote(ParamDto paramDto) {
-        Map<String, String> queryString = paramDto.getQueryString();
-        if (queryString.isEmpty()){
-            System.out.println("삭제?id={삭제할 번호}형식으로 입력하세요.");
-            return;
+    private boolean validateParam(ParamDto paramDto) {
+        if(!isContainQueryString(paramDto)) {
+            return false;
         }
 
+        Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
         if (storage.get(id) == null) {
             System.out.println(id + "번 명언은 존재하지 않습니다.");
-            return;
+            return false;
         }
+        return true;
+    }
+
+    public void deleteQuote(ParamDto paramDto) {
+        Map<String, String> queryString = paramDto.getQueryString();
+        int id = Integer.parseInt(queryString.get("id"));
         storage.remove(id);
         System.out.println(id + "번 명언은 삭제되었습니다.");
 
+    }
+
+    private boolean isContainQueryString(ParamDto paramDto) {
+        if (paramDto.getQueryString().isEmpty()) {
+            System.out.println(paramDto.getOrder() + "?id={번호}형식으로 입력하세요.");
+            return false;
+        }
+        return true;
     }
 
     private void printQuoteList() {
@@ -90,7 +105,7 @@ public class OrderService {
         storage.clear();
     }
 
-    public Map<Integer, Quote> getStorage(){
+    public Map<Integer, Quote> getStorage() {
         return storage;
     }
 }
