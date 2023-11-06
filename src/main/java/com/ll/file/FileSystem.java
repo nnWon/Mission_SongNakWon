@@ -2,11 +2,10 @@ package com.ll.file;
 
 import com.ll.domain.Quote;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 public class FileSystem {
@@ -28,5 +27,39 @@ public class FileSystem {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Map<Integer, Quote> LoadQuotes() {
+
+        try (FileReader fr = new FileReader(FILE_PATH, CHARSET);
+             BufferedReader br = new BufferedReader(fr);) {
+
+            String line = br.readLine();
+            Map<Integer, Quote> storage = new HashMap<>();
+
+            if (quotesFileIsEmpty(line)) {
+                return storage;
+            }
+
+            while (line != null) {
+                loadStorage(storage, line);
+                line = br.readLine();
+            }
+            return storage;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void loadStorage(Map<Integer, Quote> storage, String line) {
+        String[] split = line.split(",");
+        int key = Integer.parseInt(split[0]);
+        Quote quote = new Quote(split[1], split[2]);
+        storage.put(key, quote);
+    }
+
+    private boolean quotesFileIsEmpty(String line) {
+        return line == null;
     }
 }
