@@ -9,20 +9,19 @@ import java.util.Scanner;
 
 public class OrderService {
 
-    private final Map<Integer, Quote> storage = new HashMap<>();
+    private final Map<Integer, Quote> storage;
     private int sequence = 0;
 
+/*
     public OrderService() {
         storage.put(1, new Quote("현재를 사랑하라", "작자미상"));
         storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
         this.sequence = storage.size();
     }
+*/
 
     public OrderService(Map<Integer, Quote> storage) {
-        for (int key : storage.keySet()) {
-            this.storage.put(key, storage.get(key));
-        }
-        this.sequence = storage.size();
+        this.storage = storage;
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
@@ -131,6 +130,6 @@ public class OrderService {
     }
 
     public Map<Integer, Quote> getStorage() {
-        return storage;
+        return new HashMap<>(storage);
     }
 }
