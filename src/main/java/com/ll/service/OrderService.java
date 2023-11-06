@@ -18,6 +18,13 @@ public class OrderService {
         this.sequence = storage.size();
     }
 
+    public OrderService(Map<Integer, Quote> storage) {
+        for (int key: storage.keySet()) {
+            this.storage.put(key, storage.get(key));
+        }
+        this.sequence = storage.size();
+    }
+
     public void execute(Scanner scanner, ParamDto paramDto) {
         String order = paramDto.getOrder();
         if (order.equals("등록")) {
@@ -36,7 +43,7 @@ public class OrderService {
         }
     }
 
-    private void deleteQuote(ParamDto paramDto) {
+    public void deleteQuote(ParamDto paramDto) {
         Map<String, String> queryString = paramDto.getQueryString();
         if (queryString.isEmpty()){
             System.out.println("삭제?id={삭제할 번호}형식으로 입력하세요.");
@@ -81,5 +88,9 @@ public class OrderService {
 
     public void clear() {
         storage.clear();
+    }
+
+    public Map<Integer, Quote> getStorage(){
+        return storage;
     }
 }
