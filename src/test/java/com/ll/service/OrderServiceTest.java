@@ -1,6 +1,7 @@
 package com.ll.service;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import util.TestUtil;
@@ -11,6 +12,10 @@ class OrderServiceTest {
 
     private final OrderService orderService = new OrderService();
 
+    @BeforeEach
+    void beforeEach(){
+        orderService.clear();
+    }
     @Test
     @DisplayName("명언 등록이 수행되면 등록 메세지가 출력된다.")
     void createQuote() {
@@ -28,13 +33,14 @@ class OrderServiceTest {
     @DisplayName("명언을 등록할 때마다 명언 번호가 증가한다.")
     void createQuoteCountNumberTest() {
         int result = 0;
-        for (int i = 0; i < 10; i++) {
+        int cycle = 10;
+        for (int i = 0; i < cycle; i++) {
             Scanner scanner = TestUtil.genScanner("""
                 현재를 사랑하라.
                 작자미상
                 """.stripIndent());
             result = orderService.createQuote(scanner);
         }
-        Assertions.assertThat(result).isEqualTo(10);
+        Assertions.assertThat(result).isEqualTo(cycle);
     }
 }

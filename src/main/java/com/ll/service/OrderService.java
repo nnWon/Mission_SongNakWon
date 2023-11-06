@@ -43,4 +43,9 @@ public class OrderService {
         System.out.println(sequence + "번 명언이 등록되었습니다.");
         return sequence;
     }
+
+    //Test용 코드
+    public void clear(){
+        storage.clear();
+    }
 }
