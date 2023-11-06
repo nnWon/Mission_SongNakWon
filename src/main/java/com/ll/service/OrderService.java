@@ -32,13 +32,22 @@ public class OrderService {
 
         if (order.equals("삭제")) {
             deleteQuote(paramDto);
+            return;
         }
     }
 
     private void deleteQuote(ParamDto paramDto) {
         Map<String, String> queryString = paramDto.getQueryString();
+        if (queryString.isEmpty()){
+            System.out.println("삭제?id={삭제할 번호}형식으로 입력하세요.");
+            return;
+        }
 
         int id = Integer.parseInt(queryString.get("id"));
+        if (storage.get(id) == null) {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+            return;
+        }
         storage.remove(id);
         System.out.println(id + "번 명언은 삭제되었습니다.");
 
