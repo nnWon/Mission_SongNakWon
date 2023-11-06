@@ -29,6 +29,19 @@ public class OrderService {
             printQuoteList();
             return;
         }
+
+        if (order.equals("삭제")) {
+            deleteQuote(paramDto);
+        }
+    }
+
+    private void deleteQuote(ParamDto paramDto) {
+        Map<String, String> queryString = paramDto.getQueryString();
+
+        int id = Integer.parseInt(queryString.get("id"));
+        storage.remove(id);
+        System.out.println(id + "번 명언은 삭제되었습니다.");
+
     }
 
     private void printQuoteList() {
