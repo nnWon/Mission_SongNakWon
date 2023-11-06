@@ -19,14 +19,18 @@ public class QuoteApplication {
 
     public void run() {
         System.out.println("== 명언 앱 ==");
+        executeCommand();
+        saveResult();
+        scanner.close();
+    }
+
+    private void executeCommand() {
         String order = "";
         while (!order.equals("종료")) {
             System.out.print("명령) ");
             order = scanner.nextLine();
             orderService.execute(scanner, new ParamDto(order));
         }
-        saveResult();
-        scanner.close();
     }
 
     private void saveResult() {
