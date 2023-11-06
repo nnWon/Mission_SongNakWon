@@ -76,4 +76,26 @@ class OrderServiceTest {
         Assertions.assertThat(orderService.getStorageSize()).isEqualTo(2);
         Assertions.assertThat(orderService.getStorage().get(2)).isNull();
     }
+
+    @Test
+    @DisplayName("수정?id=번호 형태로 전달하면 명언이 수정된다.")
+    void updateQuoteTest() {
+        Map<Integer, Quote> storage = new HashMap<>();
+        storage.put(1, new Quote("현재를 사랑하라", "작자미상"));
+        storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
+        storage.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
+
+        OrderService orderService = new OrderService(storage);
+
+        Scanner scanner = TestUtil.genScanner("""
+                새로운 명언.
+                새로운 작자
+                """.stripIndent());
+        orderService.updateQuote(new ParamDto("수정?id=2"), scanner);
+        Quote updateQuote = orderService.getStorage().get(2);
+
+        Assertions.assertThat(orderService.getStorageSize()).isEqualTo(3);
+        Assertions.assertThat(updateQuote.getQuote()).isEqualTo("새로운 명언.");
+        Assertions.assertThat(updateQuote.getSpeaker()).isEqualTo("새로운 작자");
+    }
 }
