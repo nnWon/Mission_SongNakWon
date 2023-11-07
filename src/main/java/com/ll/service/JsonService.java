@@ -16,4 +16,8 @@ public class JsonService {
     public void build(Map<Integer, Quote> storage) throws IOException {
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH+JSON_FILE_NAME), storage);
     }
+
+    public static String getJSON_FILE_NAME() {
+        return JSON_FILE_NAME;
+    }
 }

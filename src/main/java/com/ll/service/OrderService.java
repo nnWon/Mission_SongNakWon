@@ -3,6 +3,7 @@ package com.ll.service;
 import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -53,8 +54,19 @@ public class OrderService {
         }
 
         if (order.equals("빌드")) {
-            jsonService.build(storage);
+            buildToJson(storage);
+
         }
+    }
+
+    private void buildToJson(Map<Integer, Quote> storage) {
+        try {
+            jsonService.build(storage);
+        } catch (IOException e) {
+            System.out.println("빌드에 실패하였습니다.");
+            throw new RuntimeException(e);
+        }
+        System.out.println(JsonService.getJSON_FILE_NAME() + " 파일의 내용이 갱신되었습니다.");
     }
 
     private boolean validateParam(ParamDto paramDto) {
