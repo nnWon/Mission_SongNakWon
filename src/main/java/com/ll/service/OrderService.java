@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class OrderService {
 
     private final Map<Integer, Quote> storage;
-    private int sequence = 0;
+    private int sequence;
 
 /*
     public OrderService() {
@@ -22,6 +22,7 @@ public class OrderService {
 
     public OrderService(Map<Integer, Quote> storage) {
         this.storage = storage;
+        this.sequence = storage.size();
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
