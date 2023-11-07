@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class OrderService {
 
+    private final JsonService jsonService = new JsonService();
     private final Map<Integer, Quote> storage;
     private int sequence;
 
@@ -49,6 +50,10 @@ public class OrderService {
                 updateQuote(paramDto, scanner);
             }
             return;
+        }
+
+        if (order.equals("빌드")) {
+            jsonService.build(storage);
         }
     }
 
