@@ -2,6 +2,7 @@ package com.ll.service;
 
 import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
+import com.ll.storage.Storage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 
 class OrderServiceTest {
 
-    private final OrderService orderService = new OrderService(new HashMap<>());
+    private final OrderService orderService = new OrderService(new Storage());
 
     @BeforeEach
     void beforeEach() {
@@ -37,13 +38,14 @@ class OrderServiceTest {
     @Test
     @DisplayName("명언 등록이 수행되면 Map에 저장된다..")
     void createQuoteStoredInMap() {
+        String order = "등록";
         int cycle = 2;
         for (int i = 0; i < cycle; i++) {
             Scanner scanner = TestUtil.genScanner("""
                     현재를 사랑하라.
                     작자미상
                     """.stripIndent());
-            orderService.createQuote(scanner);
+            orderService.execute(scanner, new ParamDto(order));
         }
         Assertions.assertThat(orderService.getStorageSize()).isEqualTo(cycle);
     }
@@ -51,28 +53,29 @@ class OrderServiceTest {
     @Test
     @DisplayName("명언을 등록할 때마다 명언 번호가 증가한다.")
     void createQuoteCountNumberTest() {
-        OrderService orderService = new OrderService(new HashMap<>());
-        int result = 0;
+        String order = "등록";
         int cycle = 10;
         for (int i = 0; i < cycle; i++) {
             Scanner scanner = TestUtil.genScanner("""
                     현재를 사랑하라.
                     작자미상
                     """.stripIndent());
-            result = orderService.createQuote(scanner);
+            orderService.execute(scanner, new ParamDto(order));
         }
-        Assertions.assertThat(result).isEqualTo(cycle);
+        Assertions.assertThat(orderService.getStorage().size()).isEqualTo(cycle);
     }
 
     @Test
     @DisplayName("삭제?id=번호 형태로 전달하면 명언이 삭제된다.")
     void deleteQuoteTest() {
-        Map<Integer, Quote> storage = new HashMap<>();
-        storage.put(1, new Quote("현재를 사랑하라", "작자미상"));
-        storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
-        storage.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
-        OrderService orderService = new OrderService(storage);
+        Map<Integer, Quote> map = new HashMap<>();
+        map.put(1, new Quote("현재를 사랑하라", "작자미상"));
+        map.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
+        map.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
+        OrderService orderService = new OrderService(new Storage(3, map));
+
         orderService.deleteQuote(new ParamDto("삭제?id=2"));
+
         Assertions.assertThat(orderService.getStorageSize()).isEqualTo(2);
         Assertions.assertThat(orderService.getStorage().get(2)).isNull();
     }
@@ -80,12 +83,11 @@ class OrderServiceTest {
     @Test
     @DisplayName("수정?id=번호 형태로 전달하면 명언이 수정된다.")
     void updateQuoteTest() {
-        Map<Integer, Quote> storage = new HashMap<>();
-        storage.put(1, new Quote("현재를 사랑하라", "작자미상"));
-        storage.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
-        storage.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
-
-        OrderService orderService = new OrderService(storage);
+        Map<Integer, Quote> map = new HashMap<>();
+        map.put(1, new Quote("현재를 사랑하라", "작자미상"));
+        map.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
+        map.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
+        OrderService orderService = new OrderService(new Storage(3, map));
 
         Scanner scanner = TestUtil.genScanner("""
                 새로운 명언.

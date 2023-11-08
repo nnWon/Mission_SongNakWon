@@ -1,6 +1,7 @@
 package com.ll.file;
 
 import com.ll.domain.Quote;
+import com.ll.storage.Storage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,8 +31,8 @@ class FileSystemTest {
     void LoadQuotesTest(){
         SaveQuotesTest();
         FileSystem fileSystem = new FileSystem();
-        Map<Integer, Quote> quotes = fileSystem.LoadQuotes();
+        Storage storage = fileSystem.LoadQuotes();
 
-        Assertions.assertThat(quotes.size()).isEqualTo(3);
+        Assertions.assertThat(storage.getSize()).isEqualTo(3);
     }
 }
