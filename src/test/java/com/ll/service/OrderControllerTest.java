@@ -13,13 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-class OrderServiceTest {
+class OrderControllerTest {
 
-    private final OrderService orderService = new OrderService(new Storage());
+    private final OrderController orderController = new OrderController(new Storage());
 
     @BeforeEach
     void beforeEach() {
-        orderService.clear();
+        orderController.clear();
     }
 
     @Test
@@ -32,7 +32,7 @@ class OrderServiceTest {
                 종료
                 """.stripIndent());
 
-        orderService.execute(scanner, new ParamDto(order));
+        orderController.execute(scanner, new ParamDto(order));
     }
 
     @Test
@@ -45,9 +45,9 @@ class OrderServiceTest {
                     현재를 사랑하라.
                     작자미상
                     """.stripIndent());
-            orderService.execute(scanner, new ParamDto(order));
+            orderController.execute(scanner, new ParamDto(order));
         }
-        Assertions.assertThat(orderService.getStorageSize()).isEqualTo(cycle);
+        Assertions.assertThat(orderController.getStorageSize()).isEqualTo(cycle);
     }
 
     @Test
@@ -60,9 +60,9 @@ class OrderServiceTest {
                     현재를 사랑하라.
                     작자미상
                     """.stripIndent());
-            orderService.execute(scanner, new ParamDto(order));
+            orderController.execute(scanner, new ParamDto(order));
         }
-        Assertions.assertThat(orderService.getStorage().size()).isEqualTo(cycle);
+        Assertions.assertThat(orderController.getStorage().size()).isEqualTo(cycle);
     }
 
     @Test
@@ -72,12 +72,12 @@ class OrderServiceTest {
         map.put(1, new Quote("현재를 사랑하라", "작자미상"));
         map.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
         map.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
-        OrderService orderService = new OrderService(new Storage(3, map));
+        OrderController orderController = new OrderController(new Storage(3, map));
 
-        orderService.deleteQuote(new ParamDto("삭제?id=2"));
+        orderController.deleteQuote(new ParamDto("삭제?id=2"));
 
-        Assertions.assertThat(orderService.getStorageSize()).isEqualTo(2);
-        Assertions.assertThat(orderService.getStorage().get(2)).isNull();
+        Assertions.assertThat(orderController.getStorageSize()).isEqualTo(2);
+        Assertions.assertThat(orderController.getStorage().get(2)).isNull();
     }
 
     @Test
@@ -87,16 +87,16 @@ class OrderServiceTest {
         map.put(1, new Quote("현재를 사랑하라", "작자미상"));
         map.put(2, new Quote("과거에 집착하지 마라", "작자미상"));
         map.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
-        OrderService orderService = new OrderService(new Storage(3, map));
+        OrderController orderController = new OrderController(new Storage(3, map));
 
         Scanner scanner = TestUtil.genScanner("""
                 새로운 명언.
                 새로운 작자
                 """.stripIndent());
-        orderService.updateQuote(new ParamDto("수정?id=2"), scanner);
-        Quote updateQuote = orderService.getStorage().get(2);
+        orderController.updateQuote(new ParamDto("수정?id=2"), scanner);
+        Quote updateQuote = orderController.getStorage().get(2);
 
-        Assertions.assertThat(orderService.getStorageSize()).isEqualTo(3);
+        Assertions.assertThat(orderController.getStorageSize()).isEqualTo(3);
         Assertions.assertThat(updateQuote.getQuote()).isEqualTo("새로운 명언.");
         Assertions.assertThat(updateQuote.getSpeaker()).isEqualTo("새로운 작자");
     }

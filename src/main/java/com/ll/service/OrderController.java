@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class OrderService {
+public class OrderController {
 
     private final Map<String, CommandService> commandServiceMap = new HashMap<>();
     private final Storage storage;
 
-    public OrderService(Storage storage) {
+    public OrderController(Storage storage) {
         initCommandServiceMap();
         this.storage = storage;
     }
