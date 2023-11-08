@@ -118,14 +118,7 @@ public class OrderService {
     }
 
     private void printQuoteList() {
-        for (int sequence : storage.keySet()) {
-            printQuote(sequence);
-        }
-    }
-
-    private void printQuote(int sequence) {
-        Quote quote = storage.get(sequence);
-        System.out.printf("%d // %s // %s \n", sequence, quote.getSpeaker(), quote.getQuote());
+        storage.forEach((key, value) -> System.out.printf("%d / %s / %s \n", key, value.getSpeaker(), value.getQuote()));
     }
 
     public int createQuote(Scanner scanner) {
