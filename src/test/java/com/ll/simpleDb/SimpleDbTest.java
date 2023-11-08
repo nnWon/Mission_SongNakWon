@@ -1,6 +1,7 @@
 package com.ll.simpleDb;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -14,15 +15,20 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 public class SimpleDbTest {
 
     private SimpleDb simpleDb;
-
     @BeforeAll
-    public void beforeAll() throws SQLException {
-        simpleDb = new SimpleDb("localhost", "root", "test11", "simpleDb__test");
-        //simpleDb.setDevMode(true);
+    public void beforeAll() {
+        simpleDb = new SimpleDb("localhost", "root", "", "simpleDb__test");
+       //simpleDb.setDevMode(true);
         createArticleTable();
     }
 
-    private void createArticleTable() throws SQLException {
+    @BeforeEach
+    public void beforeEach() {
+        truncateArticleTable();
+        makeArticleTestData();
+    }
+
+    private void createArticleTable() {
         simpleDb.run("DROP TABLE IF EXISTS article");
 
         simpleDb.run("""                                                
@@ -38,8 +44,7 @@ public class SimpleDbTest {
                 """);
     }
 
-    @Test
-    public void makeArticleTestData() {
+    private void makeArticleTestData() {
         IntStream.rangeClosed(1, 6).forEach(no -> {
             boolean isBlind = no > 3;
             String title = "제목%d".formatted(no);
@@ -56,6 +61,9 @@ public class SimpleDbTest {
         });
     }
 
+    private void truncateArticleTable() {
+        simpleDb.run("TRUNCATE article");
+    }
     @Test
     void DbConnectionTest() throws SQLException {
         simpleDb = new SimpleDb("localhost", "root", "test11", "simpleDb__test");
