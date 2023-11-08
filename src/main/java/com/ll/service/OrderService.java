@@ -4,6 +4,7 @@ import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
 import com.ll.service.command.CommandService;
 import com.ll.service.command.CreateCommandService;
+import com.ll.service.command.ListCommandService;
 import com.ll.storage.Storage;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class OrderService {
 
     private void initCommandServiceMap() {
         this.commandServiceMap.put("등록", new CreateCommandService());
+        this.commandServiceMap.put("목록", new ListCommandService());
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
@@ -48,11 +50,11 @@ public class OrderService {
             return;
         }
 */
-
+/*
         if (order.equals("목록")) {
             printQuoteList();
             return;
-        }
+        }*/
 
         if (order.equals("삭제")) {
             if (validateParam(paramDto)) {
@@ -131,9 +133,9 @@ public class OrderService {
         return true;
     }
 
-    private void printQuoteList() {
+/*    private void printQuoteList() {
         storage.getQuotes().forEach((key, value) -> System.out.printf("%d / %s / %s \n", key, value.getSpeaker(), value.getQuote()));
-    }
+    }*/
 
   /*  public int createQuote(Scanner scanner) {
         System.out.print("명언 : ");
