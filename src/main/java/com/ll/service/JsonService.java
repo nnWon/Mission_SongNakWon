@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class JsonService {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final static String FILE_PATH = "./file/";
     private final static String JSON_FILE_NAME = "quotes_json.txt";
 
