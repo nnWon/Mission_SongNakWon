@@ -10,8 +10,7 @@ public class SimpleDb {
     private DataSource dataSource;
 
     public SimpleDb(String url, String username, String password, String dbName) {
-        String formattedUrl = urlFormatting(url);
-        this.dataSource = initDataSource(formattedUrl, username, password, dbName);
+        this.dataSource = initDataSource(urlFormatting(url), username, password, dbName);
     }
 
     private String urlFormatting(String url) {
@@ -88,6 +87,14 @@ public class SimpleDb {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    public Sql genSql()  {
+        try {
+            return new Sql(getConnection());
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
     }
 }
