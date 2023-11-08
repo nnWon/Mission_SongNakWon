@@ -4,6 +4,7 @@ import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
 import com.ll.service.command.CommandService;
 import com.ll.service.command.CreateCommandService;
+import com.ll.service.command.DeleteCommandService;
 import com.ll.service.command.ListCommandService;
 import com.ll.storage.Storage;
 
@@ -34,6 +35,7 @@ public class OrderService {
     private void initCommandServiceMap() {
         this.commandServiceMap.put("등록", new CreateCommandService());
         this.commandServiceMap.put("목록", new ListCommandService());
+        this.commandServiceMap.put("삭제", new DeleteCommandService());
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
@@ -56,20 +58,20 @@ public class OrderService {
             return;
         }*/
 
-        if (order.equals("삭제")) {
+   /*     if (order.equals("삭제")) {
             if (validateParam(paramDto)) {
                 deleteQuote(paramDto);
             }
             return;
         }
-
-        if (order.equals("수정")) {
-            if (validateParam(paramDto)) {
+*/
+     /*   if (order.equals("수정")) {
+            if (validateParam(paramDto,storage)) {
                 updateQuote(paramDto, scanner);
             }
             return;
         }
-
+*/
         if (order.equals("빌드")) {
             buildToJson(storage.getQuotes());
         }
@@ -85,7 +87,7 @@ public class OrderService {
         System.out.println(JsonService.getJSON_FILE_NAME() + " 파일의 내용이 갱신되었습니다.");
     }
 
-    private boolean validateParam(ParamDto paramDto) {
+ /*   private boolean validateParam(ParamDto paramDto) {
         if (!isContainQueryString(paramDto)) {
             return false;
         }
@@ -97,7 +99,7 @@ public class OrderService {
             return false;
         }
         return true;
-    }
+    }*/
 
     public void updateQuote(ParamDto paramDto, Scanner scanner) {
 
@@ -117,21 +119,21 @@ public class OrderService {
         System.out.println(id + "번 명언이 수정되었습니다.");
     }
 
-    public void deleteQuote(ParamDto paramDto) {
+/*    public void deleteQuote(ParamDto paramDto) {
         Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
         storage.getQuotes().remove(id);
         System.out.println(id + "번 명언은 삭제되었습니다.");
 
-    }
+    }*/
 
-    private boolean isContainQueryString(ParamDto paramDto) {
+ /*   private boolean isContainQueryString(ParamDto paramDto) {
         if (paramDto.getQueryString().isEmpty()) {
             System.out.println(paramDto.getOrder() + "?id={번호}형식으로 입력하세요.");
             return false;
         }
         return true;
-    }
+    }*/
 
 /*    private void printQuoteList() {
         storage.getQuotes().forEach((key, value) -> System.out.printf("%d / %s / %s \n", key, value.getSpeaker(), value.getQuote()));
