@@ -2,10 +2,7 @@ package com.ll.service;
 
 import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
-import com.ll.service.command.CommandService;
-import com.ll.service.command.CreateCommandService;
-import com.ll.service.command.DeleteCommandService;
-import com.ll.service.command.ListCommandService;
+import com.ll.service.command.*;
 import com.ll.storage.Storage;
 
 import java.io.IOException;
@@ -36,6 +33,7 @@ public class OrderService {
         this.commandServiceMap.put("등록", new CreateCommandService());
         this.commandServiceMap.put("목록", new ListCommandService());
         this.commandServiceMap.put("삭제", new DeleteCommandService());
+        this.commandServiceMap.put("수정", new UpdateCommandService());
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
@@ -45,33 +43,6 @@ public class OrderService {
         if (command != null){
             command.execute(scanner,paramDto,storage);
         }
-
-/*
-        if (order.equals("등록")) {
-            createQuote(scanner);
-            return;
-        }
-*/
-/*
-        if (order.equals("목록")) {
-            printQuoteList();
-            return;
-        }*/
-
-   /*     if (order.equals("삭제")) {
-            if (validateParam(paramDto)) {
-                deleteQuote(paramDto);
-            }
-            return;
-        }
-*/
-     /*   if (order.equals("수정")) {
-            if (validateParam(paramDto,storage)) {
-                updateQuote(paramDto, scanner);
-            }
-            return;
-        }
-*/
         if (order.equals("빌드")) {
             buildToJson(storage.getQuotes());
         }
@@ -101,7 +72,7 @@ public class OrderService {
         return true;
     }*/
 
-    public void updateQuote(ParamDto paramDto, Scanner scanner) {
+  /*  public void updateQuote(ParamDto paramDto, Scanner scanner) {
 
         Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
@@ -118,7 +89,7 @@ public class OrderService {
         storage.getQuotes().put(id, updateQuote);
         System.out.println(id + "번 명언이 수정되었습니다.");
     }
-
+*/
 /*    public void deleteQuote(ParamDto paramDto) {
         Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
