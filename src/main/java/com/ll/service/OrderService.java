@@ -2,6 +2,8 @@ package com.ll.service;
 
 import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
+import com.ll.service.command.CommandService;
+import com.ll.service.command.CreateCommandService;
 import com.ll.storage.Storage;
 
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.Scanner;
 
 public class OrderService {
 
+    private final Map<String, CommandService> commandServiceMap = new HashMap<>();
     private final JsonService jsonService = new JsonService();
     private final Storage storage;
 
@@ -27,12 +30,24 @@ public class OrderService {
         this.storage = storage;
     }
 
+    private void initCommandServiceMap() {
+        this.commandServiceMap.put("등록", new CreateCommandService());
+    }
+
     public void execute(Scanner scanner, ParamDto paramDto) {
         String order = paramDto.getOrder();
+
+        CommandService command = commandServiceMap.get(order);
+        if (command != null){
+            command.execute(scanner,paramDto,storage);
+        }
+
+/*
         if (order.equals("등록")) {
             createQuote(scanner);
             return;
         }
+*/
 
         if (order.equals("목록")) {
             printQuoteList();
@@ -120,7 +135,7 @@ public class OrderService {
         storage.getQuotes().forEach((key, value) -> System.out.printf("%d / %s / %s \n", key, value.getSpeaker(), value.getQuote()));
     }
 
-    public int createQuote(Scanner scanner) {
+  /*  public int createQuote(Scanner scanner) {
         System.out.print("명언 : ");
         String quote = scanner.nextLine();
         System.out.print("작가 : ");
@@ -128,7 +143,7 @@ public class OrderService {
         storage.addQuote(new Quote(quote, speaker));
         System.out.println(storage.getSequence() + "번 명언이 등록되었습니다.");
         return storage.getSequence();
-    }
+    }*/
 
     //Test용 코드
     public int getStorageSize() {
