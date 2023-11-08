@@ -74,7 +74,7 @@ class OrderControllerTest {
         map.put(3, new Quote("사람은 오로지 가슴으로만 올바로 볼 수 있다. 본질적인 것은 눈에 보이지 않는다", "생텍쥐페리"));
         OrderController orderController = new OrderController(new Storage(3, map));
 
-        orderController.deleteQuote(new ParamDto("삭제?id=2"));
+        orderController.execute(null, new ParamDto("삭제?id=2"));
 
         Assertions.assertThat(orderController.getStorageSize()).isEqualTo(2);
         Assertions.assertThat(orderController.getStorage().get(2)).isNull();
@@ -93,7 +93,7 @@ class OrderControllerTest {
                 새로운 명언.
                 새로운 작자
                 """.stripIndent());
-        orderController.updateQuote(new ParamDto("수정?id=2"), scanner);
+        orderController.execute(scanner,new ParamDto("수정?id=2"));
         Quote updateQuote = orderController.getStorage().get(2);
 
         Assertions.assertThat(orderController.getStorageSize()).isEqualTo(3);
