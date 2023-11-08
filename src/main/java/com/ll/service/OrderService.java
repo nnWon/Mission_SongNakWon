@@ -2,6 +2,7 @@ package com.ll.service;
 
 import com.ll.domain.Quote;
 import com.ll.dto.ParamDto;
+import com.ll.storage.Storage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,8 +12,7 @@ import java.util.Scanner;
 public class OrderService {
 
     private final JsonService jsonService = new JsonService();
-    private final Map<Integer, Quote> storage;
-    private int sequence;
+    private final Storage storage;
 
 /*
     public OrderService() {
@@ -22,9 +22,9 @@ public class OrderService {
     }
 */
 
-    public OrderService(Map<Integer, Quote> storage) {
+    public OrderService(Storage storage) {
+        initCommandServiceMap();
         this.storage = storage;
-        this.sequence = storage.size();
     }
 
     public void execute(Scanner scanner, ParamDto paramDto) {
@@ -54,8 +54,7 @@ public class OrderService {
         }
 
         if (order.equals("빌드")) {
-            buildToJson(storage);
-
+            buildToJson(storage.getQuotes());
         }
     }
 
@@ -76,7 +75,7 @@ public class OrderService {
 
         Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
-        if (storage.get(id) == null) {
+        if (storage.getQuotes().get(id) == null) {
             System.out.println(id + "번 명언은 존재하지 않습니다.");
             return false;
         }
@@ -88,7 +87,7 @@ public class OrderService {
         Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
 
-        Quote quote = storage.get(id);
+        Quote quote = storage.getQuotes().get(id);
         System.out.printf("명언(기존) :%s \n", quote.getQuote());
         System.out.print("명언 :");
         String newQuote = scanner.nextLine();
@@ -97,14 +96,14 @@ public class OrderService {
         System.out.print("작가 :");
         String newSpeaker = scanner.nextLine();
         Quote updateQuote = new Quote(newQuote, newSpeaker);
-        storage.put(id, updateQuote);
+        storage.getQuotes().put(id, updateQuote);
         System.out.println(id + "번 명언이 수정되었습니다.");
     }
 
     public void deleteQuote(ParamDto paramDto) {
         Map<String, String> queryString = paramDto.getQueryString();
         int id = Integer.parseInt(queryString.get("id"));
-        storage.remove(id);
+        storage.getQuotes().remove(id);
         System.out.println(id + "번 명언은 삭제되었습니다.");
 
     }
@@ -118,7 +117,7 @@ public class OrderService {
     }
 
     private void printQuoteList() {
-        storage.forEach((key, value) -> System.out.printf("%d / %s / %s \n", key, value.getSpeaker(), value.getQuote()));
+        storage.getQuotes().forEach((key, value) -> System.out.printf("%d / %s / %s \n", key, value.getSpeaker(), value.getQuote()));
     }
 
     public int createQuote(Scanner scanner) {
@@ -126,14 +125,14 @@ public class OrderService {
         String quote = scanner.nextLine();
         System.out.print("작가 : ");
         String speaker = scanner.nextLine();
-        storage.put(++sequence, new Quote(quote, speaker));
-        System.out.println(sequence + "번 명언이 등록되었습니다.");
-        return sequence;
+        storage.addQuote(new Quote(quote, speaker));
+        System.out.println(storage.getSequence() + "번 명언이 등록되었습니다.");
+        return storage.getSequence();
     }
 
     //Test용 코드
     public int getStorageSize() {
-        return storage.size();
+        return storage.getSize();
     }
 
     public void clear() {
@@ -141,6 +140,6 @@ public class OrderService {
     }
 
     public Map<Integer, Quote> getStorage() {
-        return new HashMap<>(storage);
+        return new HashMap<>(storage.getQuotes());
     }
 }

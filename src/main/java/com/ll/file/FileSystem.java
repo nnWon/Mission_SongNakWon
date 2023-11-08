@@ -1,6 +1,7 @@
 package com.ll.file;
 
 import com.ll.domain.Quote;
+import com.ll.storage.Storage;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -15,9 +16,9 @@ public class FileSystem {
     private final static String FILE_PATH = "./file/quotes.txt";
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
-    public void createSaveFile(){
+    public void createSaveFile() {
         Path saveFilePath = Paths.get(FILE_PATH);
-        if (Files.exists(saveFilePath)){
+        if (Files.exists(saveFilePath)) {
             return;
         }
         try {
@@ -45,23 +46,30 @@ public class FileSystem {
         }
     }
 
-    public Map<Integer, Quote> LoadQuotes() {
+    public Storage LoadQuotes() {
 
         try (FileReader fr = new FileReader(FILE_PATH, CHARSET);
              BufferedReader br = new BufferedReader(fr);) {
 
             String line = br.readLine();
-            Map<Integer, Quote> storage = new HashMap<>();
+            Map<Integer, Quote> map = new HashMap<>();
 
             if (quotesFileIsEmpty(line)) {
-                return storage;
+                return new Storage(0, map);
             }
 
             while (line != null) {
-                loadStorage(storage, line);
+                loadStorage(map, line);
                 line = br.readLine();
             }
-            return storage;
+
+            int sequence = 0;
+            for (int key : map.keySet()) {
+                if (sequence < key) {
+                    sequence = key;
+                }
+            }
+            return new Storage(sequence, map);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

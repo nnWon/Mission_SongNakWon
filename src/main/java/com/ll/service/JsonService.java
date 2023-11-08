@@ -16,8 +16,8 @@ public class JsonService {
     private final static String FILE_PATH = "./file/";
     private final static String JSON_FILE_NAME = "quotes_json.txt";
 
-    public void build(Map<Integer, Quote> storage) throws IOException {
-        List<JsonFileDto> jsonFileDtos = storageToJsonFileDtos(storage);
+    public void build(Map<Integer, Quote> quotes) throws IOException {
+        List<JsonFileDto> jsonFileDtos = storageToJsonFileDtos(quotes);
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH + JSON_FILE_NAME), jsonFileDtos);
     }
 
