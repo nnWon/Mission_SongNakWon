@@ -30,7 +30,7 @@ public class SimpleDb {
         return this.dataSource.getConnection();
     }
 
-    public void run(String sql) throws SQLException {
+    public void run(String sql){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -40,7 +40,7 @@ public class SimpleDb {
             preparedStatement.execute();
 
         } catch (SQLException e) {
-            throw e;
+            throw new RuntimeException(e);
         } finally {
             close(connection, preparedStatement, null);
         }
@@ -67,6 +67,25 @@ public class SimpleDb {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    public void run(String sql, String title, String body, boolean isBlind) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,title);
+            preparedStatement.setString(2,body);
+            preparedStatement.setBoolean(3,isBlind);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(connection, preparedStatement, null);
         }
     }
 }

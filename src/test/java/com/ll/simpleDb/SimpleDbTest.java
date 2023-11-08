@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -35,6 +36,24 @@ public class SimpleDbTest {
                     isBlind BIT(1) NOT NULL DEFAULT 0
                 )
                 """);
+    }
+
+    @Test
+    public void makeArticleTestData() {
+        IntStream.rangeClosed(1, 6).forEach(no -> {
+            boolean isBlind = no > 3;
+            String title = "제목%d".formatted(no);
+            String body = "내용%d".formatted(no);
+
+            simpleDb.run("""
+                    INSERT INTO article
+                    SET createdDate = NOW(),
+                    modifiedDate = NOW(),
+                    title = ?,
+                    `body` = ?,
+                    isBlind = ?
+                    """, title, body, isBlind);
+        });
     }
 
     @Test
