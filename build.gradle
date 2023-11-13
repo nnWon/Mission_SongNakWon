@@ -10,8 +10,20 @@ repositories {
 }
 
 dependencies {
+    //Mysql-connector
+    implementation 'com.mysql:mysql-connector-j:8.0.33'
+    //Spring-JDBC
+    implementation 'org.springframework:spring-jdbc:6.0.11'
+    //HikariCP
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+    //Jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    //Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    //Test
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
 test {
